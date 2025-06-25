@@ -1,38 +1,40 @@
-//your JS co
 const progress = document.getElementById('progress');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
 const circles = document.querySelectorAll('.circle');
 
-let currentStep = 1;
+let currentActive = 1;
 
 nextBtn.addEventListener('click', () => {
-  if (currentStep < circles.length) {
-    currentStep++;
-    updateProgress();
+  currentActive++;
+  if (currentActive > circles.length) {
+    currentActive = circles.length;
   }
+  update();
 });
 
 prevBtn.addEventListener('click', () => {
-  if (currentStep > 1) {
-    currentStep--;
-    updateProgress();
+  currentActive--;
+  if (currentActive < 1) {
+    currentActive = 1;
   }
+  update();
 });
 
-function updateProgress() {
+function update() {
   circles.forEach((circle, idx) => {
-    if (idx < currentStep) {
+    if (idx < currentActive) {
       circle.classList.add('active');
     } else {
       circle.classList.remove('active');
     }
   });
 
-  const progressPercent = ((currentStep - 1) / (circles.length - 1)) * 100;
-  progress.style.width = progressPercent + '%';
+  const activeCircles = document.querySelectorAll('.circle.active').length;
+  const totalSteps = circles.length - 1;
+  const percent = (activeCircles - 1) / totalSteps * 100;
+  progress.style.width = percent + '%';
 
-  prevBtn.disabled = currentStep === 1;
-  nextBtn.disabled = currentStep === circles.length;
+  prevBtn.disabled = currentActive === 1;
+  nextBtn.disabled = currentActive === circles.length;
 }
-de here. If required.
